@@ -1,0 +1,17 @@
+Format is tab separated dimension settings.
+_Name                          	Value
+WindowPosition	700+0
+Open File for Dimension	
+Activate Volumetric Extrusion (Stepper driven Extruders)	True
+Filament Diameter (mm):	1.73
+E-Steps corrector:	1.0
+Are You Calibrating?	False
+Measured Width of Extrusion:	1.0
+Extruder Retraction Speed (mm/s):	40.0
+Retraction Distance (millimeters):	0.75
+Restart Extra Distance (millimeters):	0.0
+Retract Within Island	False
+Minimum Travelmove after Retraction (millimeters):	10.0
+Maximum E Value before Reset (float):	91234.0
+Absolute Extrusion Distance	False
+Relative Extrusion Distance	True

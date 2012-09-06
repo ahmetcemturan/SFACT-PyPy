@@ -1,0 +1,9 @@
+Format is tab separated dwindle settings.
+_Name                          	Value
+WindowPosition	700+0
+Open File for Dwindle	
+Activate Dwindle	False
+End Rate Multiplier (ratio):	1.0
+Pent Up Volume (cubic millimeters):	0.1
+Slowdown Steps (positive integer):	5
+Slowdown Volume (cubic millimeters):	3.0

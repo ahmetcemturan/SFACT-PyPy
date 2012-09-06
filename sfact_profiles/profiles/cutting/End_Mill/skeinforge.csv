@@ -1,0 +1,10 @@
+Format is tab separated skeinforge settings.
+_Name                          	Value
+WindowPosition	700+5
+Open File for Skeinforge	C:/Users/Ahmet/STL/opto-z-flag-2.STL
+analyze	False
+craft	False
+help	False
+meta	False
+profile	True
+Slice with PyPy 	False
