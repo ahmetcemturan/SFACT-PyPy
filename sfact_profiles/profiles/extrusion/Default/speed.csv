@@ -8,7 +8,7 @@ Bridge Feed Rate (ratio to Perim.feed):	1.0
 Bridge Flow Rate (scaler):	1.0
 Duty Cyle at Beginning (portion):	1.0
 Duty Cyle at Ending (portion):	0.0
-Main Feed Rate (mm/s):	95.0
+Main Feed Rate (mm/s):	100.0
 Main Flow Rate  (scaler):	1.0
 First Layer Main Feed Rate(mm/sec):	60.0
 First Layer Edge Feed Rate (mm/sec):	15.0

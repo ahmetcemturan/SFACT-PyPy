@@ -7,7 +7,7 @@ Heated PrintBed Temperature Forced (Celcius):	60.0
 Bed Temperature Begin Change Height (mm):	-1.0
 Bed Temperature End Change Height (mm):	-1.0
 Bed Temperature End (Celcius):	20.0
-Initial Extruder Nozzle Temperature Forced (Celcius):	220.0
+Initial Extruder Nozzle Temperature Forced (Celcius):	210.0
 PrintBed Temp. Forced (Set 0 to disable):	0.0
 Turn print Bed Heater Off at Shut Down	False
 Turn Extruder Heater Off at Shut Down 	True

@@ -139,9 +139,8 @@ class SkirtRepository:
 			fabmetheus_interpret.getGNUTranslatorGcodeFileTypeTuples(), 'Open File for Skirt', self, '')
 		self.openWikiManualHelpPage = settings.HelpPage().getOpenFromAbsolute('http://fabmetheus.crsndoo.com/wiki/index.php/Skeinforge_Skirt')
 		self.activateSkirt = settings.BooleanSetting().getFromValue('Activate Skirt', self, False)
-		self.baseShells = settings.IntSpin().getSingleIncrementFromValue(1, 'Base Shells (integer)', self, 10, 1)
 		self.convex = settings.BooleanSetting().getFromValue('Convex:', self, True)
-		self.gapOverEdgeWidth = settings.FloatSpin().getFromValue(1.0, 'Gap over Perimeter Width (ratio):', self, 5.0, 3.0)
+		self.gapOverEdgeWidth = settings.FloatSpin().getFromValue(0.0, 'Gap over Perimeter Width (ratio):', self, 5.0, 3.0)
 		self.layersTo = settings.IntSpin().getSingleIncrementFromValue(0, 'Layers To (index):', self, 912345678, 1)
 		self.brimWidth = settings.IntSpin().getSingleIncrementFromValue(0, 'Brim Width:', self, 50, 0)
 		self.executeTitle = 'Skirt'
@@ -200,10 +199,7 @@ class SkirtSkein:
 		oldTemperature = self.oldTemperatureInput
 		self.addTemperatureLineIfDifferent(self.skirtTemperature)
 		self.addFlowRate(self.skirtFlowRate)
-		outsetLoops = self.baseOutsetLoops
-		if self.layerIndex > 0:
-			outsetLoops = self.upperOutsetLoops
-		for outsetLoop in outsetLoops:
+		for outsetLoop in self.outsetLoops:
 			closedLoop = outsetLoop + [outsetLoop[0]]
 			self.distanceFeedRate.addGcodeFromFeedRateThreadZ(self.feedRateMinute, closedLoop, self.travelFeedRateMinute, z)
 		self.addFlowRate(self.oldFlowRate)
@@ -229,15 +225,11 @@ class SkirtSkein:
 		points += euclidean.getPointsByVerticalDictionary(self.edgeWidth, self.unifiedLoop.verticalDictionary)
 		loops = triangle_mesh.getDescendingAreaOrientedLoops(points, points, 2.5 * self.edgeWidth)
 		outerLoops = getOuterLoops(loops)
-		self.baseOutsetLoops = []
-		self.upperOutsetLoops = []
-		for shellIndex in xrange(self.repository.baseShells.value, 0, -1):
-			outsetLoops = intercircle.getInsetSeparateLoopsFromLoops(outerLoops, -self.skirtOutset - shellIndex * self.edgeWidth)
-			outsetLoops = getOuterLoops(outsetLoops)
-			if self.repository.convex.value:
-				outsetLoops = [euclidean.getLoopConvex(euclidean.getConcatenatedList(outsetLoops))]
-			self.baseOutsetLoops += outsetLoops
-			self.upperOutsetLoops = outsetLoops
+		outsetLoops = intercircle.getInsetSeparateLoopsFromLoops(outerLoops, -self.skirtOutset-self.edgeWidth*(self.repository.brimWidth.value+1))
+		self.outsetLoops = getOuterLoops(outsetLoops)
+		if self.repository.convex.value:
+			self.outsetLoops = [euclidean.getLoopConvex(euclidean.getConcatenatedList(self.outsetLoops))]
+	
 		if self.repository.brimWidth.value > 0:	
 			points = euclidean.getPointsByHorizontalDictionary(self.edgeWidth, self.unifiedLoop.horizontalDictionary)
 			points += euclidean.getPointsByVerticalDictionary(self.edgeWidth, self.unifiedLoop.verticalDictionary)
@@ -316,16 +308,16 @@ class SkirtSkein:
 			elif firstWord == '(<objectNextLayersTemperature>':
 				self.oldTemperatureInput = float(splitLine[1])
 				self.skirtTemperature = self.oldTemperatureInput
-			elif firstWord == '(<edgeFeedRatePerSecond>':#todo make it firstlayer
+			elif firstWord == '(<operatingFeedRatePerSecond>':
 				self.feedRateMinute = 60.0 * float(splitLine[1])
 			elif firstWord == '(<operatingFlowRate>':
 				self.oldFlowRate = float(splitLine[1])
 				self.skirtFlowRate = self.oldFlowRate
 			elif firstWord == '(<edgeWidth>':
 				self.edgeWidth = float(splitLine[1])
-				self.skirtOutset = (self.repository.gapOverEdgeWidth.value + 0.5) * self.edgeWidth
+				self.skirtOutset = (self.repository.gapOverEdgeWidth.value) * self.edgeWidth
 				self.distanceFeedRate.addTagRoundedLine('skirtOutset', self.skirtOutset)
-			elif firstWord == '(<travelFeedRatePerSecond>':#todo make it firstlayer
+			elif firstWord == '(<travelFeedRatePerSecond>':
 				self.travelFeedRateMinute = 60.0 * float(splitLine[1])
 			self.distanceFeedRate.addLine(line)
 
