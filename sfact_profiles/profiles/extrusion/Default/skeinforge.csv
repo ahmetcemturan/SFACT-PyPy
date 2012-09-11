@@ -1,10 +1,10 @@
 Format is tab separated skeinforge settings.
 _Name                          	Value
 WindowPosition	611+0
-Open File for Skeinforge	C:/Users/Ahmet/STL/boschrexroth/fan shroud4.STL
+Open File for Skeinforge	C:/Users/Ahmet/STL/Calibration/ultimate.STL
 analyze	False
 craft	True
 help	False
 meta	False
 profile	False
-Slice with PyPy 	True
+Slice with PyPy 	False
